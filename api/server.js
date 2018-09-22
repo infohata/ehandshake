@@ -8,7 +8,7 @@ const Eos = require('eosjs');
 const config = {
     expireInSeconds: 60,
     broadcast: true,
-    keyProvider: ['5KXBRhhdMH7DprM38GKTgMHwUybFXdKCrKbZdV4K7QoaKWwJ5xX'],
+    keyProvider: ['5KXBRhhdMH7DprM38GKTgMHwUybFXdKCrKbZdV4K7QoaKWwJ5xX','5JKmtoCStk6eBupdxiFBpAcw9G4W4sST9GUfHdske1Kue8o6in3'],
     debug: false,
     sign: true,
     // mainNet bp endpoint
@@ -27,6 +27,15 @@ app.use(function(req, res, next){
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.get("/api/hello", async function(req,res) {
+  await new Promise(function(resolve, reject) {
+    setTimeout(function() {
+      resolve('foo');
+    }, 300);
+  });
+  res.json({ message: "trust made", type:"success"});
+});
 
 app.post("/api/shakehands", function(req, res){
     var sender = req.param('sender');
@@ -53,12 +62,12 @@ app.post("/api/shakehands", function(req, res){
         .catch(error => console.error(error));
 
     options = {
-      authorization: 'kaeuouji@active',
+      authorization: sender + '@active',
       broadcast: true,
       sign: true
     }
 
-    eos.transfer('kaeuouji', 'trevor', '5.0000 EOS', '', options)
+    eos.transfer(sender, receiver, '5.0000 EOS', '', options)
       .then(result => console.log(result))
       .catch(error => console.error(error));
 
