@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.post("/api/shakehands", function(req, res){
     var sender = req.param('sender');
     var receiver = req.param('receiver');
-    var trustGroup = req.param('trust_group');
+    var trustGroup = req.param('trust_group_id');
     var subjet = req.param('subject');
 
     console.log(Eos);
