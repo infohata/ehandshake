@@ -4,6 +4,8 @@ import './App.css';
 import { QRCode } from 'react-qr-svg';
 import QrReader from 'react-qr-reader'
 import ReactDOM from 'react-dom';
+import Button from 'react-button'
+
 
 class App extends Component {
   constructor(props){
@@ -13,7 +15,7 @@ class App extends Component {
       result: 'No result',
     }
     this.handleScan = this.handleScan.bind(this)
-  }
+    }
   handleScan(data){
     if(data){
       this.setState({
@@ -24,7 +26,18 @@ class App extends Component {
   handleError(err){
     console.error(err)
   }
+  var Button = React.createClass({
+    render: function() {
+        return <button type="button" onClick={this.onClick}>Click me</button>
+    },
+
+    onClick: function(ev) {
+        alert('the button was clicked');
+    }
+});
+
   render() {
+
       return (
       <div>
         <header className="App-header">
@@ -51,6 +64,7 @@ class App extends Component {
             />
           <p>{this.state.result}</p>
         </p>
+        <Button onClick={clicked} >Export</Button>s
       </div>
       );
   }
