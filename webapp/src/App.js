@@ -35,12 +35,13 @@ class App extends Component {
           EHandShake
         </p>
         <p>
+          <p>EOS acount name : kesututis</p>
         <QRCode
               bgColor="#FFFFFF"
               fgColor="#000000"
               level="Q"
               style={{ width: 256 }}
-              value="some text -eadewadawdwaedaedewa"
+              value=""
           />
           <QrReader
             delay={this.state.delay}
