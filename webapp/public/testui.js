@@ -175,8 +175,6 @@ async function checkTrustRequest(myaccount, groupId) {
 
     console.log(trustByGroup.rows);
 
-
-
 if (trustByGroup.rows.length>0) {
     document.getElementById("userMessage").innerHTML = "Confirmed";
     document.getElementById("uMessage").classList.add("alert-info");
@@ -186,7 +184,6 @@ if (trustByGroup.rows.length>0) {
   document.getElementById("uMessage").classList.add("alert-danger");
 document.getElementById("uMessage").classList.remove("alert-info");
 }
-
 
   } catch(e) {
     if (typeof e === 'string') e = JSON.parse(e);
