@@ -3,8 +3,10 @@ function makeRequest() {
   var myaccount = document.getElementById("myaccount").value;
   var youraccount = document.getElementById("youraccount").value;
 
-  var mygroup= 3;
+  var mygroup= 0;
   var mysubject ="trevor crowd";
+  var myaccount = "trevor";
+  var youraccount="kaeuouji";
   makeTrustRequestAsync(myaccount, youraccount, mygroup, mysubject);
 }
 
@@ -26,6 +28,16 @@ function upperBound(account_name) {
     return account_name.slice(0, -1)+last;
 }
 
+function addGroup() {
+
+
+      document.getElementById("userMessage").innerHTML = "Group Added";
+      document.getElementById("uMessage").classList.add("alert-info");
+    document.getElementById("uMessage").classList.remove("alert-danager");
+
+
+}
+
 
 async function makeTrustRequestAsync( myaccount,youraccount, mygroup, mysubject) {
     // asynchroniously retreive the contract
@@ -38,6 +50,15 @@ async function makeTrustRequestAsync( myaccount,youraccount, mygroup, mysubject)
               "group_id": mygroup,
               "subject": mysubject
           }, options);
+
+//trevorlee
+      document.getElementById("userMessage").innerHTML = "Added";
+      document.getElementById("uMessage").classList.add("alert-info");
+      document.getElementById("uMessage").classList.remove("alert-danger");
+
+
+
+
       } catch(e) {
           if (typeof e === 'string') e = JSON.parse(e);
           console.log("error:", e);
@@ -64,10 +85,6 @@ function makeCheck() {
   var myaccount = document.getElementById("myaccountcheck").value;
   var groupid = document.getElementById("groupid").value;
 
-  console.log(myaccount)
-  console.log(groupid)
-
-
   checkTrustRequest(myaccount, groupid);
 
 }
@@ -89,7 +106,6 @@ function makeTrustRequest(myaccount, youraccount, mygroup, mysubject) {
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("sender=" +myaccount + "&" + "receiver="
   +youraccount + "&" + "trust_group_id=" + mygroup + "&" + "subject=" + mysubject);
-
 
   xhttp.onreadystatechange = function(){
     if(this.readyState == 4 && this.status ==200){
@@ -157,18 +173,20 @@ async function checkTrustRequest(myaccount, groupId) {
         "limit": 0
     });
 
-
-    let trusting = trustByGroup.rows.filter(row => {if (row.to == myaccount) row;});
-    let trusted = trustByGroup.rows.filter(row => {if(row.to == myaccount) row;});
-
-    console.log("TRUSTING:", trustByGroup);
-    console.log("TRUSTING:", trusting);
-    console.log("TRUSTED", trusted);
+    console.log(trustByGroup.rows);
 
 
-    document.getElementById("userMessage").innerHTML = trusting;
-    document.getElementById("uMessage").classList.add("alert-danger");
-    document.getElementById("uMessage").classList.remove("alert-info");
+
+if (trustByGroup.rows.length>0) {
+    document.getElementById("userMessage").innerHTML = "Confirmed";
+    document.getElementById("uMessage").classList.add("alert-info");
+  document.getElementById("uMessage").classList.remove("alert-danager");
+} else {
+  document.getElementById("userMessage").innerHTML = "NOT confirmed";
+  document.getElementById("uMessage").classList.add("alert-danger");
+document.getElementById("uMessage").classList.remove("alert-info");
+}
+
 
   } catch(e) {
     if (typeof e === 'string') e = JSON.parse(e);
