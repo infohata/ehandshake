@@ -158,9 +158,14 @@ async function checkTrustRequest(myaccount, groupId) {
       return row.from == myaccount;
     }
 
-    document.getElementById("userMessage").innerHTML = trustByGroup;
-    document.getElementById("uMessage").classList.add("alert-danger");
-    document.getElementById("uMessage").classList.remove("alert-info");
+    var rows = trustByGroup.rows
+    text = "<p>Your Network of Trust</p><ul>";
+
+    for (i = 0; i < rows.length; i++) {
+      text += "<li>" + " from :" + rows[i].from +  " to: " + rows[i].to + " group ID:"  + rows[i].group_id  + "</li>";
+    }
+
+    document.getElementById("netwokrlist").innerHTML = text
 
   } catch(e) {
     if (typeof e === 'string') e = JSON.parse(e);
