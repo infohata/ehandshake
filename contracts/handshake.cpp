@@ -3,6 +3,7 @@
 void handshake::shakehands(const account_name from, const account_name to, const uint64_t group_id, const string subject) {
     require_auth(from);
     require_recipient(to);
+    eosio_assert(check_group(group_id, subject), "group not found or subject mismatching.");
     
 }
 
@@ -32,6 +33,9 @@ bool handshake::check_group(const uint64_t group_id, const string subject) {
     trustgroups trustgroup_table(_self, _self);
     auto itr = trustgroup_table.find(group_id);
     if (itr != trustgroup_table.end()) {
+        if (itr->subject != subject) {
+            return false;
+        }
         return true;
     }
     return false;
