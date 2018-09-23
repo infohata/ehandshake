@@ -18,7 +18,6 @@ function makeTrustRequest(myaccount, youraccount, mygroup, mysubject) {
   xhttp.send("sender=" +myaccount + "&" + "receiver="
   +youraccount + "&" + "trust_group_id=" + mygroup + "&" + "subject=" + mysubject);
 
-
   xhttp.onreadystatechange = function(){
     if(this.readyState == 4 && this.status ==200){
        var data = JSON.parse(this.response);
@@ -36,16 +35,7 @@ function makeTrustRequest(myaccount, youraccount, mygroup, mysubject) {
   };
 }
 
-
-
-
-
-
-
 window.onload = function() {
 //    document.getElementById("source").value = exampleSource;
-
-
-
-  //////////
+//////////
 };
