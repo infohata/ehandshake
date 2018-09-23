@@ -16,6 +16,7 @@ const config = {
 const eos = Eos(config);
 
 console.log(Eos);
+console.log(Eos);
 
 eos.getAccount('trevor')
     .then(result => console.log(result))
@@ -40,4 +41,3 @@ options = {
 }
 
 eos.transfer('trevor', 'kaeuouji', '5.0000 EOS', '', options);
-

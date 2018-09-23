@@ -46,9 +46,8 @@ function makeCheck() {
   var myaccount = document.getElementById("myaccount").value;
   var youraccount = document.getElementById("youraccount").value;
 
-  var mygroup="tba";
-  var mysubject ="mysubject"
-  checkTrustRequest(myaccount, youraccount, mygroup, mysubject);
+  checkTrustRequest(myaccount, youraccount);
+
 }
 
 function pendingRequests() {
@@ -96,7 +95,6 @@ function getPendingRequests(myaccount, youraccount, mygroup, mysubject) {
   xhttp.send("sender=" +myaccount + "&" + "receiver="
   +youraccount + "&" + "trust_group_id=" + mygroup + "&" + "subject=" + mysubject);
 
-
   xhttp.onreadystatechange = function(){
     if(this.readyState == 4 && this.status ==200){
        var data = JSON.parse(this.response);
@@ -112,37 +110,51 @@ function getPendingRequests(myaccount, youraccount, mygroup, mysubject) {
 
 
 
-function checkTrustRequest(myaccount, youraccount, mygroup, mysubject) {
+async function checkTrustRequest(youraccount, youraccount) {
 
-  var xhttp = new XMLHttpRequest();
+  let t_from = myaccount;
+  let t_to = youraccount;
 
-  xhttp.open("POST", "/api/checktrust", true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("sender=" +myaccount + "&" + "receiver="
-  +youraccount + "&" + "trust_group_id=" + mygroup + "&" + "subject=" + mysubject);
+  // pulling data from trust table on who the user trusts
+  try {
+    let trusted_by = await eos.getTableRows({
+        "json": true,
+        "code": hs_acc,
+        "scope": hs_acc,
+        "table": 'trust',
+        "index_position": 2,
+        "key_type": 'name',
+        "lower_bound": t_from,
+        "upper_bound": upperBound(t_from),
+        "limit": 0
+    });
+    console.log("TRUSTED BY:", trusted_by);
+    // pulling data from trust table on who trusts the user
+    let trusting = await eos.getTableRows({
+        "json": true,
+        "code": hs_acc,
+        "scope": hs_acc,
+        "table": 'trust',
+        "index_position": 3,
+        "key_type": 'i64',
+        "lower_bound": group_id,
+        "upper_bound": group_id+1,
+        "limit": 0
+    });
+    console.log("TRUSTING:", trusting);
 
+  } catch(e) {
+    if (typeof e === 'string') e = JSON.parse(e);
+    console.log("error:", e);
+  }
 
   xhttp.onreadystatechange = function(){
-    if(this.readyState == 4 && this.status ==200){
-       var data = JSON.parse(this.response);
-       if (data.message != "Trusted") {
              document.getElementById("userMessage").innerHTML = data.message;
              document.getElementById("uMessage").classList.add("alert-danger");
              document.getElementById("uMessage").classList.remove("alert-info");
-
-         } else {
-             document.getElementById("userMessage").innerHTML = data.message;
-             document.getElementById("uMessage").classList.add("alert-info");
-             document.getElementById("uMessage").classList.remove("alert-danger");
-        }
     }
   };
 }
-
-
-
-
-
 
 
 window.onload = function() {
