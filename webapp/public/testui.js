@@ -8,6 +8,24 @@ function makeRequest() {
   makeTrustRequestAsync(myaccount, youraccount, mygroup, mysubject);
 }
 
+function upperBound(account_name) {
+    let last = account_name.slice(-1);
+    switch (last) {
+        case '5':
+            last = 'a';
+            break;
+        case '.':
+            last = '1';
+            break;
+        case 'z':
+            last = 'z1';
+            break;
+        default:
+            last = String.fromCharCode(last.charCodeAt(0) + 1);
+    }
+    return account_name.slice(0, -1)+last;
+}
+
 
 async function makeTrustRequestAsync( myaccount,youraccount, mygroup, mysubject) {
     // asynchroniously retreive the contract
@@ -55,6 +73,7 @@ function pendingRequests() {
   var mypendingRequests = getPendingRequests(myaccount);
   populatePendingRequests(mypendingRequests);
 }
+
 
 
 
@@ -110,32 +129,24 @@ function getPendingRequests(myaccount, youraccount, mygroup, mysubject) {
 
 
 
-async function checkTrustRequest(youraccount, youraccount) {
+async function checkTrustRequest(myaccount, group_id) {
+
+  group_id = 0
 
   let t_from = myaccount;
   let t_to = youraccount;
+  let hs_acc = 'hands';
 
   // pulling data from trust table on who the user trusts
   try {
-    let trusted_by = await eos.getTableRows({
-        "json": true,
-        "code": hs_acc,
-        "scope": hs_acc,
-        "table": 'trust',
-        "index_position": 2,
-        "key_type": 'name',
-        "lower_bound": t_from,
-        "upper_bound": upperBound(t_from),
-        "limit": 0
-    });
-    console.log("TRUSTED BY:", trusted_by);
+
     // pulling data from trust table on who trusts the user
     let trusting = await eos.getTableRows({
         "json": true,
         "code": hs_acc,
         "scope": hs_acc,
         "table": 'trust',
-        "index_position": 3,
+        "index_position": 4,
         "key_type": 'i64',
         "lower_bound": group_id,
         "upper_bound": group_id+1,
@@ -143,18 +154,16 @@ async function checkTrustRequest(youraccount, youraccount) {
     });
     console.log("TRUSTING:", trusting);
 
+    document.getElementById("userMessage").innerHTML = trusting;
+    document.getElementById("uMessage").classList.add("alert-danger");
+    document.getElementById("uMessage").classList.remove("alert-info");
+
   } catch(e) {
     if (typeof e === 'string') e = JSON.parse(e);
-    console.log("error:", e);
+      console.log("error:", e);
   }
 
-  xhttp.onreadystatechange = function(){
-             document.getElementById("userMessage").innerHTML = data.message;
-             document.getElementById("uMessage").classList.add("alert-danger");
-             document.getElementById("uMessage").classList.remove("alert-info");
-    }
   };
-}
 
 
 window.onload = function() {

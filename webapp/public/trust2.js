@@ -14,7 +14,6 @@ const config = {
 };
 
 const eos = Eos(config);
-trust
 // console.log(Eos);
 
 options = {
@@ -63,58 +62,4 @@ let hs_acc = 'hands';
         console.log("error:", e);
     }
 
-    // pulling data from trust group table
-    let trust_groups = await eos.getTableRows({
-      "json": true,
-      "code": hs_acc,
-      "scope": hs_acc,
-      "table": 'trustgroup',
-      "index_position": 4,
-      "key_type": 'name',
-      "lower_bound": tg_creator,
-      "upper_bound": upperBound(tg_creator),
-      "limit": 0
-    });
-    // get the data from DOM from within async function
-    let t_subject = tg_subject; // get it from created group list; or ask from user input;
-    let t_from = tg_creator;
-    let t_to = "codum";
-    let t_group_id = 20; // get it from group list if it is group creator; or ask from user input;
-    try {
-        let trustgroup_creation = await contract.shakehands({
-            "from": t_from,
-            "to": t_to,
-            "group_id": t_group_id,
-            "subject": t_subject
-        }, options);
-    } catch(e) {
-        if (typeof e === 'string') e = JSON.parse(e);
-        console.log("error:", e);
-    }
-    // pulling data from trust table on who the user trusts
-    let trusted_by = await eos.getTableRows({
-        "json": true,
-        "code": hs_acc,
-        "scope": hs_acc,
-        "table": 'trust',
-        "index_position": 2,
-        "key_type": 'name',
-        "lower_bound": t_from,
-        "upper_bound": upperBound(t_from),
-        "limit": 0
-    });
-    console.log("TRUSTED BY:", trusted_by);
-    // pulling data from trust table on who trusts the user
-    let trusting = await eos.getTableRows({
-        "json": true,
-        "code": hs_acc,
-        "scope": hs_acc,
-        "table": 'trust',
-        "index_position": 3,
-        "key_type": 'name',
-        "lower_bound": t_from,
-        "upper_bound": upperBound(t_from),
-        "limit": 0
-    });
-    console.log("TRUSTING:", trusting);
 })();
