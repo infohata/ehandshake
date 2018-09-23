@@ -153,14 +153,15 @@ async function checkTrustRequest(myaccount, groupId) {
         "index_position": 4,
         "key_type": 'i64',
         "lower_bound": groupId,
-        "upper_bound": groupId+1,
+        "upper_bound": groupId + 1,
         "limit": 0
     });
+
 
     let trusting = trustByGroup.rows.filter(row => {if (row.to == myaccount) row;});
     let trusted = trustByGroup.rows.filter(row => {if(row.to == myaccount) row;});
 
-
+    console.log("TRUSTING:", trustByGroup);
     console.log("TRUSTING:", trusting);
     console.log("TRUSTED", trusted);
 
