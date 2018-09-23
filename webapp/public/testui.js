@@ -61,10 +61,14 @@ function populatePendingRequests(pendingRequests) {
 }
 
 function makeCheck() {
-  var myaccount = document.getElementById("myaccount").value;
-  var youraccount = document.getElementById("youraccount").value;
+  var myaccount = document.getElementById("myaccounttocheck").value;
+  var groupid = document.getElementById("groupid").value;
 
-  checkTrustRequest(myaccount, youraccount);
+  console.log(myaccount)
+  console.log(groupid)
+
+
+  checkTrustRequest(myaccount, groupid);
 
 }
 
@@ -129,30 +133,37 @@ function getPendingRequests(myaccount, youraccount, mygroup, mysubject) {
 
 
 
-async function checkTrustRequest(myaccount, group_id) {
+async function checkTrustRequest(myaccount, groupId) {
 
-  group_id = 0
+  console.log(myaccount)
+  console.log(groupId)
 
   let t_from = myaccount;
-  let t_to = youraccount;
   let hs_acc = 'hands';
 
   // pulling data from trust table on who the user trusts
   try {
 
     // pulling data from trust table on who trusts the user
-    let trusting = await eos.getTableRows({
+    let trustByGroup = await eos.getTableRows({
         "json": true,
         "code": hs_acc,
         "scope": hs_acc,
         "table": 'trust',
         "index_position": 4,
         "key_type": 'i64',
-        "lower_bound": group_id,
-        "upper_bound": group_id+1,
+        "lower_bound": groupId,
+        "upper_bound": groupId+1,
         "limit": 0
     });
+
+    let trusting = trustByGroup.rows.filter(row => {if (row.to == myaccount) row;});
+    let trusted = trustByGroup.rows.filter(row => {if(row.to == myaccount) row;});
+
+
     console.log("TRUSTING:", trusting);
+    console.log("TRUSTED", trusted);
+
 
     document.getElementById("userMessage").innerHTML = trusting;
     document.getElementById("uMessage").classList.add("alert-danger");

@@ -126,7 +126,7 @@
                                  aria-label="Trusted Account"
                                  aria-describedby="basic-addon2">
                               <div class="input-group-append">
-                                 <button id="makeRequestID" onclick="makeRequest()"
+                                 <button id="pendingRequest" onclick="makeRequest()"
                                     class="btn btn-outline-secondary" type="button"
                                     >Add</button>
                               </div>
@@ -142,7 +142,7 @@
                      <div class="row">
                         <div class="col-md-12">
                            <div class="input-group mb-3">
-                              <input type="text" id="myaccount" class="form-control"
+                              <input type="text" id="myaccounpending" class="form-control"
                                  placeholder="My Account"
                                  aria-label="My Account"
                                  aria-describedby="basic-addon2">
@@ -167,14 +167,14 @@
                      <div class="row">
                         <div class="col-md-12">
                            <div class="input-group mb-3">
-                              <input type="text" id="myaccountcheck" class="form-control"
+                              <input type="text" id="myaccounttocheck" class="form-control"
                                  placeholder="My Account"
                                  aria-label="My Account"
                                  aria-describedby="basic-addon2">
                               <input type="text" class="form-control"
-                                 id="youraccountcheck"
-                                 placeholder="Other Account"
-                                 aria-label="Other Account"
+                                 id="groupid"
+                                 placeholder="Trust Group ID"
+                                 aria-label="Trust Group ID"
                                  aria-describedby="basic-addon2">
                               <div class="input-group-append">
                                  <button id="makeCheckID" onclick="makeCheck()"
