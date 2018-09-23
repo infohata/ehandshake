@@ -9,7 +9,7 @@
        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
+     
        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 
@@ -22,11 +22,13 @@
          chain = {
            sys: 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f' // main network
          }
+
          options = {
            authorization: 'trevor@active',
            broadcast: true,
            sign: true
          };
+
          /**
            Other httpEndpoint's: https://www.eosdocs.io/resources/apiendpoints
          */
@@ -54,21 +56,24 @@
    <body>
 
 <div class="container">
-  <div class="row">
-    <div class="col-md-12 jumbotron mb-0">
-    <h1 class="text-center">e-handshake</h1>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12 alert alert-info" id="uMessage" role="alert">
-      <p id="userMessage"></p>
-    </div>
-  </div>
+   <div class="row">
+ <div class="col-md-2">
+
+ </div>
+ <div class="col-md-8 jumbotron">
+   <h1 class="text-center">eHandshake System</h1>
+ </div>
+ <div class="col-md-2">
+   <div class="col-md-12 alert alert-info" id="uMessage" role="alert">
+     <p id="userMessage"></p>
+   </div>
+ </div>
 </div>
 
 <div class="container">
  <div class="row">
    <div class="col-md-12">
+     <hr>
      <ul class="nav nav-tabs" id="myTab" role="tablist">
      <li class="nav-item">
        <a class="nav-link active" id="home-tab" data-toggle="tab"
@@ -80,10 +85,21 @@
        aria-selected="false">Give Trust</a>
      </li>
      <li class="nav-item">
+       <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+       aria-controls="contact" aria-selected="false">Pending Requests</a>
+     </li>
+     <li class="nav-item">
        <a class="nav-link" id="addbonus-tab" data-toggle="tab"
        href="#addbonus" role="tab"
        aria-controls="addbonus" aria-selected="false">Check Trust</a>
      </li>
+
+     <li class="nav-item">
+       <a class="nav-link" id="addgroup-tab" data-toggle="tab"
+       href="#addgroup" role="tab"
+       aria-controls="addgroup" aria-selected="false">Add Group</a>
+     </li>
+
      </ul>
    <div class="tab-content" id="myTabContent">
      <div class="tab-pane fade show active" id="home" role="tabpanel"
@@ -112,7 +128,7 @@
              </div>
              <div class="col-md-3">
                <input type="text" class="form-control"
-                   id="groupsubject"
+                   id="mysubject"
                              placeholder="Subject"
                              aria-label="Subject"
                               aria-describedby="basic-addon2">
@@ -187,9 +203,9 @@
                  aria-label="My Account"
                   aria-describedby="basic-addon2">
                    <input type="text" class="form-control"
-                   id="groupid"
-                             placeholder="Trust Group ID"
-                             aria-label="Trust Group ID"
+                   id="youraccountcheck"
+                             placeholder="Other Account"
+                             aria-label="Other Account"
                               aria-describedby="basic-addon2">
                  <div class="input-group-append">
                    <button id="makeCheckID" onclick="makeCheck()"
@@ -200,6 +216,46 @@
           </div>
         </div>
      </div>
+
+
+     <div class="tab-pane fade" id="addgroup" role="tabpanel"
+     aria-labelledby="addgroup-tab">
+     <h1>Add Group</h1>
+        <div class="row">
+           <div class="col-md-12">
+             <div class="input-group mb-3">
+                 <input type="text" id="creategroupsubject" class="form-control"
+                 placeholder="Subject"
+                 aria-label="Subject"
+                  aria-describedby="basic-addon2">
+
+                  <input type="text" id="creatorAccount" class="form-control"
+                  placeholder="Creator Account"
+                  aria-label="Creator Account"
+                   aria-describedby="basic-addon2">
+
+
+                 <div class="input-group-append">
+                   <button id="addGroupButton" onclick="addGroup()"
+                   class="btn btn-outline-secondary" type="button"
+                   >Add Group</button>
+                 </div>
+             </div>
+          </div>
+        </div>
+     </div>
+
+
+
+
+
+
+
+
+
+
+
+
    </div>
 
    </div>
