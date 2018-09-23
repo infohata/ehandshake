@@ -64,10 +64,6 @@ function makeCheck() {
   var myaccount = document.getElementById("myaccountcheck").value;
   var groupid = document.getElementById("groupid").value;
 
-  console.log(myaccount)
-  console.log(groupid)
-
-
   checkTrustRequest(myaccount, groupid);
 
 }
@@ -89,7 +85,6 @@ function makeTrustRequest(myaccount, youraccount, mygroup, mysubject) {
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("sender=" +myaccount + "&" + "receiver="
   +youraccount + "&" + "trust_group_id=" + mygroup + "&" + "subject=" + mysubject);
-
 
   xhttp.onreadystatechange = function(){
     if(this.readyState == 4 && this.status ==200){
@@ -157,14 +152,12 @@ async function checkTrustRequest(myaccount, groupId) {
         "limit": 0
     });
 
+    console.log(trustByGroup.rows[0].to);
+    console.log(trustByGroup.rows[1]);
 
-    let trusting = trustByGroup.rows.filter(row => {if (row.to == myaccount) row;});
-    let trusted = trustByGroup.rows.filter(row => {if(row.to == myaccount) row;});
-
-    console.log("TRUSTING:", trustByGroup);
-    console.log("TRUSTING:", trusting);
-    console.log("TRUSTED", trusted);
-
+    function checkFrom(row) {
+      return row.from == myaccount;
+    }
 
     document.getElementById("userMessage").innerHTML = trusting;
     document.getElementById("uMessage").classList.add("alert-danger");
