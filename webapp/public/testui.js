@@ -61,7 +61,7 @@ function populatePendingRequests(pendingRequests) {
 }
 
 function makeCheck() {
-  var myaccount = document.getElementById("myaccounttocheck").value;
+  var myaccount = document.getElementById("myaccountcheck").value;
   var groupid = document.getElementById("groupid").value;
 
   console.log(myaccount)
