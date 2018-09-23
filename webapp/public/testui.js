@@ -24,9 +24,6 @@ async function makeTrustRequestAsync( myaccount,youraccount, mygroup, mysubject)
           if (typeof e === 'string') e = JSON.parse(e);
           console.log("error:", e);
       }
-
-
-
 }
 
 
