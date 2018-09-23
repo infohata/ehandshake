@@ -3,22 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "eosjs": "^16.0.8",
-    "instascan": "^1.0.0",
-    "qrcode-reader": "^1.0.4",
-    "react": "^16.5.2",
-    "react-button": "^1.2.1",
-    "react-dom": "^16.5.2",
-    "react-qr-reader": "^2.1.0",
-    "react-qr-svg": "^2.1.0"
+    "eosjs": "^16.0.8"
   },
   "devDependencies": {
-    "react-scripts": "1.1.5"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
   }
 }
