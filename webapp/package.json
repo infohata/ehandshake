@@ -3,10 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "eosjs": "^16.0.8"
+    "eosjs": "^16.0.8",
+    "express": "^4.16.3"
   },
-  "devDependencies": {
-  },
-  "scripts": {
-  }
+  "devDependencies": {},
+  "scripts": {}
 }

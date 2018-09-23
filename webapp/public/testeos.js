@@ -3,6 +3,7 @@ const Eos = require('eosjs');
 
 const config = {
     expireInSeconds: 60,
+    keyProvider: ['5KXBRhhdMH7DprM38GKTgMHwUybFXdKCrKbZdV4K7QoaKWwJ5xX','5JKmtoCStk6eBupdxiFBpAcw9G4W4sST9GUfHdske1Kue8o6in3'],
     broadcast: true,
     debug: false,
     sign: true,
@@ -38,5 +39,5 @@ options = {
   sign: true
 }
 
-eos.transfer('trevor', 'kaeuouji', '5.0000 SYS', '', options);
+eos.transfer('trevor', 'kaeuouji', '5.0000 EOS', '', options);
 
