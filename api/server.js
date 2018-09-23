@@ -3,7 +3,6 @@ const app = express();
 
 const bodyParser = require('body-parser');
 
-const Eos = require('eosjs');
 
 const config = {
     expireInSeconds: 60,
@@ -17,6 +16,7 @@ const config = {
     chainId: 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f',
 };
 
+const Eos = require('eosjs');
 const eos = Eos(config);
 
 app.use(function(req, res, next){
@@ -43,7 +43,6 @@ app.post("/api/shakehands", function(req, res){
     var trustGroup = req.param('trust_group_id');
     var subjet = req.param('subject');
 
-    console.log(Eos);
 
     eos.getAccount('trevor')
         .then(result => console.log(result))
@@ -64,6 +63,7 @@ app.post("/api/shakehands", function(req, res){
     options = {
       authorization: sender + '@active',
       broadcast: true,
+
       sign: true
     }
 
