@@ -19,6 +19,9 @@ class handshake : public contract {
         /// @abi action 
         void newtrustgrp(const string subject, const account_name creator, const time created_at);
 
+        /// @abi action
+        void deletegroup(const uint64_t id);
+
     private:
         
         /// @abi table trustgroup i64
@@ -30,11 +33,13 @@ class handshake : public contract {
             time created_at;
 
             uint64_t primary_key() const { return id; }
+            account_name get_creator() const { return creator; }
 
-            EOSLIB_SERIALIZE(trustgroup, (id)(subject))
+            EOSLIB_SERIALIZE(trustgroup, (id)(subject)(creator)(created_at))
         };
 
-        typedef eosio::multi_index<N(trustgroup), trustgroup> trustgroups;
+        typedef eosio::multi_index<N(trustgroup), trustgroup,
+            indexed_by<N(creator), const_mem_fun<trustgroup, uint64_t, &trustgroup::get_creator>>> trustgroups;
         
         /// @abi table trust i64
         struct trust
@@ -47,7 +52,6 @@ class handshake : public contract {
             time broken_at;
 
             uint64_t primary_key() const { return id; }
-        
             account_name get_to() const { return to; }
             account_name get_from() const { return from; }
 
@@ -58,5 +62,7 @@ class handshake : public contract {
                 indexed_by<N(to), const_mem_fun<trust, uint64_t, &trust::get_to>>,
                 indexed_by<N(from), const_mem_fun<trust, uint64_t, &trust::get_from>>> 
             trusts;
+
+        bool check_group(const uint64_t group_id, const string subject);
 
 }; //class handshake.
