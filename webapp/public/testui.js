@@ -3,8 +3,10 @@ function makeRequest() {
   var myaccount = document.getElementById("myaccount").value;
   var youraccount = document.getElementById("youraccount").value;
 
-  var mygroup= 3;
+  var mygroup= 0;
   var mysubject ="trevor crowd";
+  var myaccount = "trevor";
+  var youraccount="kaeuouji";
   makeTrustRequestAsync(myaccount, youraccount, mygroup, mysubject);
 }
 
@@ -26,6 +28,16 @@ function upperBound(account_name) {
     return account_name.slice(0, -1)+last;
 }
 
+function addGroup() {
+
+
+      document.getElementById("userMessage").innerHTML = "Group Added";
+      document.getElementById("uMessage").classList.add("alert-info");
+    document.getElementById("uMessage").classList.remove("alert-danager");
+
+
+}
+
 
 async function makeTrustRequestAsync( myaccount,youraccount, mygroup, mysubject) {
     // asynchroniously retreive the contract
@@ -38,6 +50,15 @@ async function makeTrustRequestAsync( myaccount,youraccount, mygroup, mysubject)
               "group_id": mygroup,
               "subject": mysubject
           }, options);
+
+//trevorlee
+      document.getElementById("userMessage").innerHTML = "Added";
+      document.getElementById("uMessage").classList.add("alert-info");
+      document.getElementById("uMessage").classList.remove("alert-danger");
+
+
+
+
       } catch(e) {
           if (typeof e === 'string') e = JSON.parse(e);
           console.log("error:", e);
@@ -154,18 +175,15 @@ async function checkTrustRequest(myaccount, groupId) {
 
     console.log(trustByGroup.rows);
 
-    function checkFrom(row) {
-      return row.from == myaccount;
-    }
-
-    var rows = trustByGroup.rows
-    text = "<p>Your Network of Trust</p><ul>";
-
-    for (i = 0; i < rows.length; i++) {
-      text += "<li>" + " from :" + rows[i].from +  " to: " + rows[i].to + " group ID:"  + rows[i].group_id  + "</li>";
-    }
-
-    document.getElementById("netwokrlist").innerHTML = text
+if (trustByGroup.rows.length>0) {
+    document.getElementById("userMessage").innerHTML = "Confirmed";
+    document.getElementById("uMessage").classList.add("alert-info");
+  document.getElementById("uMessage").classList.remove("alert-danager");
+} else {
+  document.getElementById("userMessage").innerHTML = "NOT confirmed";
+  document.getElementById("uMessage").classList.add("alert-danger");
+document.getElementById("uMessage").classList.remove("alert-info");
+}
 
   } catch(e) {
     if (typeof e === 'string') e = JSON.parse(e);
