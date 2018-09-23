@@ -77,7 +77,7 @@ let hs_acc = 'hands';
     let t_subject = tg_subject; // get it from created group list; or ask from user input;
     let t_from = tg_creator;
     let t_to = "codum";
-    let t_group_id = 3; // get it from group list if it is group creator; or ask from user input;
+    let t_group_id = 20; // get it from group list if it is group creator; or ask from user input;
     try {
         let trustgroup_creation = await contract.shakehands({
             "from": t_from,

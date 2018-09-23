@@ -8,6 +8,24 @@ function makeRequest() {
   makeTrustRequestAsync(myaccount, youraccount, mygroup, mysubject);
 }
 
+function upperBound(account_name) {
+    let last = account_name.slice(-1);
+    switch (last) {
+        case '5':
+            last = 'a';
+            break;
+        case '.':
+            last = '1';
+            break;
+        case 'z':
+            last = 'z1';
+            break;
+        default:
+            last = String.fromCharCode(last.charCodeAt(0) + 1);
+    }
+    return account_name.slice(0, -1)+last;
+}
+
 
 async function makeTrustRequestAsync( myaccount,youraccount, mygroup, mysubject) {
     // asynchroniously retreive the contract
@@ -43,12 +61,11 @@ function populatePendingRequests(pendingRequests) {
 }
 
 function makeCheck() {
-  var myaccount = document.getElementById("myaccount").value;
-  var youraccount = document.getElementById("youraccount").value;
+  var myaccount = document.getElementById("myaccountcheck").value;
+  var groupid = document.getElementById("groupid").value;
 
-  var mygroup="tba";
-  var mysubject ="mysubject"
-  checkTrustRequest(myaccount, youraccount, mygroup, mysubject);
+  checkTrustRequest(myaccount, groupid);
+
 }
 
 function pendingRequests() {
@@ -56,6 +73,7 @@ function pendingRequests() {
   var mypendingRequests = getPendingRequests(myaccount);
   populatePendingRequests(mypendingRequests);
 }
+
 
 
 
@@ -67,7 +85,6 @@ function makeTrustRequest(myaccount, youraccount, mygroup, mysubject) {
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("sender=" +myaccount + "&" + "receiver="
   +youraccount + "&" + "trust_group_id=" + mygroup + "&" + "subject=" + mysubject);
-
 
   xhttp.onreadystatechange = function(){
     if(this.readyState == 4 && this.status ==200){
@@ -96,7 +113,6 @@ function getPendingRequests(myaccount, youraccount, mygroup, mysubject) {
   xhttp.send("sender=" +myaccount + "&" + "receiver="
   +youraccount + "&" + "trust_group_id=" + mygroup + "&" + "subject=" + mysubject);
 
-
   xhttp.onreadystatechange = function(){
     if(this.readyState == 4 && this.status ==200){
        var data = JSON.parse(this.response);
@@ -112,37 +128,51 @@ function getPendingRequests(myaccount, youraccount, mygroup, mysubject) {
 
 
 
-function checkTrustRequest(myaccount, youraccount, mygroup, mysubject) {
+async function checkTrustRequest(myaccount, groupId) {
 
-  var xhttp = new XMLHttpRequest();
+  console.log(myaccount)
+  console.log(groupId)
 
-  xhttp.open("POST", "/api/checktrust", true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("sender=" +myaccount + "&" + "receiver="
-  +youraccount + "&" + "trust_group_id=" + mygroup + "&" + "subject=" + mysubject);
+  let t_from = myaccount;
+  let hs_acc = 'hands';
 
+  // pulling data from trust table on who the user trusts
+  try {
 
-  xhttp.onreadystatechange = function(){
-    if(this.readyState == 4 && this.status ==200){
-       var data = JSON.parse(this.response);
-       if (data.message != "Trusted") {
-             document.getElementById("userMessage").innerHTML = data.message;
-             document.getElementById("uMessage").classList.add("alert-danger");
-             document.getElementById("uMessage").classList.remove("alert-info");
+    // pulling data from trust table on who trusts the user
+    let trustByGroup = await eos.getTableRows({
+        "json": true,
+        "code": hs_acc,
+        "scope": hs_acc,
+        "table": 'trust',
+        "index_position": 4,
+        "key_type": 'i64',
+        "lower_bound": groupId,
+        "upper_bound": groupId + 1,
+        "limit": 0
+    });
 
-         } else {
-             document.getElementById("userMessage").innerHTML = data.message;
-             document.getElementById("uMessage").classList.add("alert-info");
-             document.getElementById("uMessage").classList.remove("alert-danger");
-        }
+    console.log(trustByGroup.rows);
+
+    function checkFrom(row) {
+      return row.from == myaccount;
     }
+
+    var rows = trustByGroup.rows
+    text = "<p>Your Network of Trust</p><ul>";
+
+    for (i = 0; i < rows.length; i++) {
+      text += "<li>" + " from :" + rows[i].from +  " to: " + rows[i].to + " group ID:"  + rows[i].group_id  + "</li>";
+    }
+
+    document.getElementById("netwokrlist").innerHTML = text
+
+  } catch(e) {
+    if (typeof e === 'string') e = JSON.parse(e);
+      console.log("error:", e);
+  }
+
   };
-}
-
-
-
-
-
 
 
 window.onload = function() {

@@ -1,9 +1,10 @@
+// https://medium.com/coinmonks/how-to-use-eosjs-api-1-770b037b22ad
 
 const Eos = require('eosjs');
 
 const config = {
     expireInSeconds: 60,
-    keyProvider: ['5KXBRhhdMH7DprM38GKTgMHwUybFXdKCrKbZdV4K7QoaKWwJ5xX','5JKmtoCStk6eBupdxiFBpAcw9G4W4sST9GUfHdske1Kue8o6in3'],
+    keyProvider: ['5JKmtoCStk6eBupdxiFBpAcw9G4W4sST9GUfHdske1Kue8o6in3'],
     broadcast: true,
     debug: false,
     sign: true,
@@ -39,5 +40,6 @@ options = {
   sign: true
 }
 
-eos.transfer('trevor', 'kaeuouji', '5.0000 EOS', '', options);
-
+eos.transfer('trevor', 'kaeuouji', '5.0000 EOS', '', options)
+.then(result => console.log(result))
+.catch(error => console.error(error));

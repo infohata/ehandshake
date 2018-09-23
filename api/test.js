@@ -42,10 +42,6 @@ function upperBound(account_name) {
 
 let hs_acc = 'hands';
 
-const today = new Date();
-const moment = require('moment');
-todayUnix = moment(today).unix();
-
 // create trust group
 (async function () {
     // asynchroniously retreive the contract
