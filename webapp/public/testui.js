@@ -152,14 +152,13 @@ async function checkTrustRequest(myaccount, groupId) {
         "limit": 0
     });
 
-    console.log(trustByGroup.rows[0].to);
-    console.log(trustByGroup.rows[1]);
+    console.log(trustByGroup.rows);
 
     function checkFrom(row) {
       return row.from == myaccount;
     }
 
-    document.getElementById("userMessage").innerHTML = trusting;
+    document.getElementById("userMessage").innerHTML = trustByGroup;
     document.getElementById("uMessage").classList.add("alert-danger");
     document.getElementById("uMessage").classList.remove("alert-info");
 
