@@ -3,12 +3,55 @@
    <head>
        <title>eHandshake Demo</title>
        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+       <!-- // <script src="https://s3.amazonaws.com/browser-solc.dappbench.com/browser-solc.js"></script> -->
+       <script id="testscript" src="./testui.js" type="text/javascript"></script>
        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+       <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-       <script type="text/javascript" src="../node_modules/eosjs/lib/eos.min.js"></script>
-       <script type="text/javascript" src="../node_modules/eosjs-ecc/lib/eosjs-ecc.min.js"></script>
+
+
+         <script src="https://cdn.jsdelivr.net/npm/eosjs@16.0.8/lib/eos.min.js"
+           integrity="sha512-zhPSKFEBlDVvUzjl9aBS66cI8tDYoLetynuKvIekHT8NZZ12oxwcZ//M/eT/2Rb/pR/cjFvLD8104Cy//sdEnA=="
+           crossorigin="anonymous"></script>
+
+         <script>
+         /** Transactions are only valid on the selected chain. */
+         chain = {
+           sys: 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f' // main network
+         }
+
+         options = {
+           authorization: 'trevor@active',
+           broadcast: true,
+           sign: true
+         };
+
+         /**
+           Other httpEndpoint's: https://www.eosdocs.io/resources/apiendpoints
+         */
+         const config = {
+                expireInSeconds: 60,
+                keyProvider: ['5KXBRhhdMH7DprM38GKTgMHwUybFXdKCrKbZdV4K7QoaKWwJ5xX','5JKmtoCStk6eBupdxiFBpAcw9G4W4sST9GUfHdske1Kue8o6in3'],
+                broadcast: true,
+                debug: false,
+                sign: true,
+                // mainNet bp endpoint
+                httpEndpoint: 'http://10.20.11.163:8888',
+                // mainNet chainId
+                chainId: 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f',
+            };
+         eos = Eos(config);
+         let contract;
+        (async function() {
+          contract =
+           await eos.contract("hands", options);
+        })();
+         </script>
+
+
    </head>
    <body>
 
@@ -40,7 +83,7 @@
      <li class="nav-item">
        <a class="nav-link" id="profile-tab" data-toggle="tab"
        href="#profile" role="tab" aria-controls="profile"
-       aria-selected="false">Trust Request</a>
+       aria-selected="false">Give Trust</a>
      </li>
      <li class="nav-item">
        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
@@ -52,23 +95,7 @@
        aria-controls="addbonus" aria-selected="false">Check Trust</a>
      </li>
 
-     <li class="nav-item">
-       <a class="nav-link" id="addwallet-tab" data-toggle="tab"
-       href="#addwallet" role="tab"
-       aria-controls="addwallet" aria-selected="false">Add Wallet</a>
-     </li>
 
-     <li class="nav-item">
-       <a class="nav-link" id="howitworks-tab" data-toggle="tab"
-       href="#howitworks" role="tab"
-       aria-controls="howitworks" aria-selected="false">How it Works</a>
-     </li>
-
-     <li class="nav-item">
-       <a class="nav-link" id="employee-tab" data-toggle="tab"
-       href="#employee" role="tab"
-       aria-controls="employee" aria-selected="false">My Bonuses</a>
-     </li>
 
      </ul>
    <div class="tab-content" id="myTabContent">
@@ -80,34 +107,87 @@
 
      <div class="tab-pane fade" id="profile" role="tabpanel"
      aria-labelledby="profile-tab">
- <h1>Trust Request</h1>
+ <h1>Give Trust</h1>
 
          <div class="row">
-            <div class="col-md-12">
+             <div class="col-md-3">
+               <input type="text" id="myaccount" class="form-control"
+                 placeholder="My Account"
+                 aria-label="My Account"
+                  aria-describedby="basic-addon2">
+             </div>
+             <div class="col-md-3">
+               <input type="text" class="form-control"
+                   id="mygroup"
+                             placeholder="Group"
+                             aria-label="Group"
+                              aria-describedby="basic-addon2">
+             </div>
+             <div class="col-md-3">
+               <input type="text" class="form-control"
+                   id="groupsubject"
+                             placeholder="Subject"
+                             aria-label="Subject"
+                              aria-describedby="basic-addon2">
+             </div>
+        </div>
+
+
+         <div class="row">
+
+           <div class="col-md-4">
+           </div>
+            <div class="col-md-5">
               <div class="input-group mb-3">
-                  <input type="text" id="myaccount" class="form-control"
-                  placeholder="My Account"
-                  aria-label="My Account"
-                   aria-describedby="basic-addon2">
-                    <input type="text" class="form-control"
+                <input type="text" class="form-control"
                     id="youraccount"
-                              placeholder="Other Account"
-                              aria-label="Other Account"
+                              placeholder="Trusted Account"
+                              aria-label="Trusted Account"
                                aria-describedby="basic-addon2">
+
                   <div class="input-group-append">
                     <button id="makeRequestID" onclick="makeRequest()"
                     class="btn btn-outline-secondary" type="button"
-                    >Make Request</button>
+                    >Add</button>
                   </div>
               </div>
            </div>
+           <div class="col-md-3">
+           </div>
+
          </div>
 
 
      </div>
      <div class="tab-pane fade" id="contact" role="tabpanel"
      aria-labelledby="contact-tab">
- <h1>Pending Requests</h1>
+         <h1>Pending Requests</h1>
+
+
+          <div class="row">
+             <div class="col-md-12">
+               <div class="input-group mb-3">
+                   <input type="text" id="myaccount" class="form-control"
+                   placeholder="My Account"
+                   aria-label="My Account"
+                    aria-describedby="basic-addon2">
+
+                   <div class="input-group-append">
+                     <button id="pendingRequest" onclick="pendingRequests()"
+                     class="btn btn-outline-secondary" type="button"
+                     >Check</button>
+                   </div>
+               </div>
+            </div>
+          </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                         <select id="selectPending" class="custom-select"
+                         onchange="selectPending()"></select>
+                        </div>
+                    </div>
+
      </div>
 
 
@@ -115,26 +195,32 @@
      aria-labelledby="addbonus-tab">
 <h1>Check Trust</h1>
 
+        <div class="row">
+           <div class="col-md-12">
+             <div class="input-group mb-3">
+                 <input type="text" id="myaccountcheck" class="form-control"
+                 placeholder="My Account"
+                 aria-label="My Account"
+                  aria-describedby="basic-addon2">
+                   <input type="text" class="form-control"
+                   id="youraccountcheck"
+                             placeholder="Other Account"
+                             aria-label="Other Account"
+                              aria-describedby="basic-addon2">
+                 <div class="input-group-append">
+                   <button id="makeCheckID" onclick="makeCheck()"
+                   class="btn btn-outline-secondary" type="button"
+                   >Check</button>
+                 </div>
+             </div>
+          </div>
+        </div>
+
+
      </div>
 
 
-     <div class="tab-pane fade" id="addwallet" role="tabpanel"
-     aria-labelledby="addwallet-tab">
 
-
-     </div>
-
-     <div class="tab-pane fade" id="howitworks" role="tabpanel"
-     aria-labelledby="howitworks-tab">
-
-     </div>
-
-     <div class="tab-pane fade" id="employee" role="tabpanel"
-     aria-labelledby="employee-tab">
-
-
-
-     </div>
 
 
 
